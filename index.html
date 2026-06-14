@@ -1,131 +1,411 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>PARA EL AMOR DE MI VIDA</title>
-        <style>
-            body {
-                font-family: 'Arial', sans-serif;
-                background: linear-gradient(to right, #ff9a9e, #fad0c4);
-                animation: gradientShift 2s infinite alternate;
-                color: #333;
-                text-align: center;
-                padding: 20px;
-            }
-    
-            @keyframes gradientShift {
-                0% {
-                    background: linear-gradient(to right, #ff9a9e, #fad0c4);
-                }
-                100% {
-                    background: linear-gradient(to right, #a18cd1, #fbc2eb);
-                }
-            }
-    
-            h1 {
-                color: #0011ff;
-                animation: slideIn 2s ease-out;
-            }
-    
-            .foto {
-                width: 65%;
-                max-width: 600px;
-                margin-top: 20px;
-                border-radius: 10px;
-                animation: fadeIn 2s ease-out;
-            }
-    
-            @keyframes fadeIn {
-                from {
-                    opacity: 0;
-                }
-                to {
-                    opacity: 1;
-                }
-            }
-    
-            @keyframes float {
-                0% {
-                    top: 100%;
-                    left: 50%;
-                    transform: scale(0.5);
-                }
-                50% {
-                    top: 50%;
-                    left: 30%;
-                    transform: scale(1.5);
-                }
-                100% {
-                    top: 0%;
-                    left: 70%;
-                    transform: scale(1);
-                }
-            }
-    
-            .seccion {
-                margin: 40px 0;
-                padding: 20px;
-                background-color: #ffc7e9;
-                border-radius: 8px;
-            }
-    
-            footer {
-                font-size: 16px;
-                color: #888;
-                margin-top: 30px;
-            }
-    
-            button {
-                padding: 10px 20px;
-                background-color: #ff69b4;
-                color: rgb(255, 255, 255);
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-                transition: transform 0.3s ease, background-color 0.3s ease;
-            }
-    
-            button:hover {
-                transform: scale(1.1);
-                background-color: #ff3366;
-            }
-        </style>
-    </head>
-    <body>
-    
-        <h1>♡ PARA MI BONITA ♡</h1>
-        <div class="seccion">
-            <h2>Nuestra Historia</h2>
-            <p>Desde el primer momento que nos conocimos, supe que nuestra historia sería única, me gustaste desde que te comence a conocer mejor, me daba pena decirtelo y tambien demostrartelo, pero al final todo fluyo bien y de un momento a otro te convertiste en el amor de mi vida.</p>
-        </div>
-        
-        <div class="seccion">
-            <h2>Fotos del amor de mi vida</h2>
-            <img src="foto1.jpg" alt="TU" class="foto">
-            <img src="foto2.jpg" alt="TU" class="foto">
-            <img src="foto3.jpg" alt="TU Y YO" class="foto">
-        </div>
-    
-        <div class="seccion">
-            <h2>¿Por qué te amo?</h2>
-            <ul>
-                <li>Porque cuento contigo en todo lo que haga.</li>
-                <li>Porque me entiendes sin que tenga que decir una palabra.</li>
-                <li>Porque compartimos sueños y metas juntos.</li>
-                <li>Porque me haces sentir amado cada día.</li>
-            </ul>
-        </div>
-    
-        <div class="seccion">
-            <h2>Mi Mensaje para Ti</h2>
-            <p>Mi amor, cada día a tu lado es un regalo, no sabes lo mucho que soy feliz cuando estoy contigo, te amo cada dia mas que el anterior, quiero estar contigo para siempre mi bonita eres lo mejor que me ha pasado en la vida, ojala nunca te aburras de mi mi amor, te amo mucho mi amor, no olvides que tienes a alguien que te ama mucho y que esta orgulloso de ti por lo que has logrado. Te amo mi amor♡ </p>
-        </div>
-    
-        <footer>
-            <p>Con todo mi amor, Yo.</p>
-        </footer>
-    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Un Viaje Para Ti</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+        body {
+            background-color: #050505; color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden; touch-action: none;
+        }
 
-    </body>
-    </html>
+        /* --- FONDO CANVAS --- */
+        #canvas { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; }
+
+        /* --- CONTROL DE FASES --- */
+        .phase {
+            position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 5; opacity: 0; pointer-events: none; transition: opacity 1.5s ease;
+        }
+        .phase.active { opacity: 1; pointer-events: auto; }
+        .instruction { font-size: 1.2rem; color: rgba(255,255,255,0.8); letter-spacing: 2px; text-transform: uppercase; text-align: center; text-shadow: 0 0 10px #fff; z-index: 10; }
+
+        /* --- FASE 1: BOTÓN --- */
+        .hold-btn {
+            width: 150px; height: 150px; border-radius: 50%;
+            background: radial-gradient(circle, #ff2a5f, #ff0040); border: none;
+            color: white; font-size: 1.1rem; font-weight: bold; cursor: pointer;
+            box-shadow: 0 0 30px #ff0040, inset 0 0 20px rgba(255,255,255,0.5);
+            position: relative; transition: transform 0.1s; z-index: 10;
+        }
+        .hold-btn::before {
+            content: ''; position: absolute; top: -10px; left: -10px; right: -10px; bottom: -10px;
+            border-radius: 50%; border: 4px solid transparent; border-top-color: #00f3ff; border-bottom-color: #00f3ff;
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .hold-btn.holding { transform: scale(0.9); }
+        .hold-btn.holding::before { opacity: 1; animation: spin 3s linear forwards; }
+        @keyframes spin { 0% { transform: rotate(0deg); border-width: 4px; } 100% { transform: rotate(720deg); border-width: 15px; border-color: #00f3ff; } }
+        #phase1 .instruction { margin-top: 30px; }
+
+        /* --- FASE 2: RECUERDOS Y CORAZONES (NUEVO) --- */
+        #phase2 .instruction { position: absolute; top: 12%; }
+        
+        .floating-heart {
+            position: absolute; font-size: 2rem; bottom: -50px; opacity: 0.6;
+            animation: floatUp 7s infinite linear; pointer-events: none;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.6; }
+            100% { transform: translateY(-120vh) rotate(360deg) scale(1.5); opacity: 0; }
+        }
+
+        .memory {
+            position: absolute; width: 110px; height: 120px; perspective: 1000px;
+            cursor: pointer; animation: floatMemory 4s infinite ease-in-out alternate;
+        }
+        .memory-inner {
+            width: 100%; height: 100%; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+        /* Cuando se toca, gira y se hace más grande para leerse */
+        .memory.opened .memory-inner { transform: rotateY(180deg) scale(1.6); z-index: 20; }
+        .memory.opened { z-index: 20; animation-play-state: paused; } /* Pausa el flote al abrir */
+
+        .memory-front, .memory-back {
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border-radius: 12px; text-align: center; padding: 10px;
+        }
+        .memory-front { 
+            background: rgba(255, 42, 95, 0.15); border: 2px solid #ff2a5f; 
+            font-size: 3rem; box-shadow: 0 0 20px rgba(255, 42, 95, 0.4); backdrop-filter: blur(5px);
+        }
+        .memory-back {
+            background: #fff; color: #111; transform: rotateY(180deg); 
+            font-size: 0.9rem; font-weight: bold; border: 2px solid #ddd; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        .memory-back.photo {
+            /* Aquí puedes poner una imagen real reemplazando el background */
+            background-color: #f0f0f0; background-size: cover; background-position: center;
+            padding: 5px; justify-content: flex-end;
+        }
+        .photo-caption { background: #fff; width: 100%; padding: 5px 0; font-size: 0.7rem; border-radius: 0 0 5px 5px; }
+
+        @keyframes floatMemory { 
+            0% { transform: translateY(0px) rotate(-3deg); } 
+            100% { transform: translateY(-20px) rotate(3deg); } 
+        }
+
+        /* --- FASE 3: DECODIFICADOR --- */
+        #phase3 { background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); }
+        .cyber-box {
+            border: 2px solid #00f3ff; padding: 40px 20px; border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.3), inset 0 0 20px rgba(0, 243, 255, 0.1);
+            text-align: center; max-width: 90%; width: 500px;
+        }
+        .decoder-text {
+            font-family: 'Courier New', Courier, monospace; font-size: 2rem;
+            color: #00f3ff; text-shadow: 0 0 10px #00f3ff; letter-spacing: 5px;
+            min-height: 80px; display: flex; align-items: center; justify-content: center;
+            flex-wrap: wrap; word-break: break-word; margin-bottom: 30px;
+        }
+        .decode-btn {
+            padding: 15px 40px; border-radius: 30px; border: 1px solid #00f3ff;
+            background: transparent; color: #00f3ff; font-weight: bold; font-size: 1.2rem;
+            cursor: pointer; text-transform: uppercase; letter-spacing: 2px;
+            transition: all 0.3s; box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+        }
+        .decode-btn:hover, .decode-btn:active { background: #00f3ff; color: #000; box-shadow: 0 0 30px #00f3ff; }
+
+        /* --- FASE 4: EL TECLADO --- */
+        .keypad-container {
+            background: rgba(0, 0, 0, 0.6); padding: 30px; border-radius: 20px;
+            border: 1px solid rgba(255, 42, 95, 0.3); box-shadow: 0 0 30px rgba(255, 42, 95, 0.2);
+            backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center;
+        }
+        .display-screen {
+            width: 100%; height: 50px; background: rgba(255,255,255,0.1); border-radius: 10px;
+            margin-bottom: 20px; font-size: 2rem; letter-spacing: 10px; display: flex;
+            justify-content: center; align-items: center; color: #ff2a5f; text-shadow: 0 0 10px #ff2a5f;
+            transition: all 0.3s;
+        }
+        .key-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .key {
+            width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 1.5rem;
+            display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.2s;
+        }
+        .key:active { background: #ff2a5f; transform: scale(0.9); box-shadow: 0 0 15px #ff2a5f; border-color: #ff2a5f; }
+        .key.zero { grid-column: 2; }
+        .error-shake { animation: errShake 0.4s; border-color: red !important; color: red !important; text-shadow: 0 0 10px red !important; }
+        @keyframes errShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+
+        /* --- FASE 5: EL NÚCLEO (WARP SPEED) --- */
+        .heart-3d {
+            font-size: 8rem; filter: drop-shadow(0 0 50px #ff0040);
+            animation: heartbeat 1s infinite cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        @keyframes heartbeat { 0%, 30%, 60% { transform: scale(1); } 15% { transform: scale(1.3); } 45% { transform: scale(1.15); } }
+        .final-text { margin-top: 40px; font-size: 1.8rem; font-weight: bold; color: #ff2a5f; text-shadow: 0 0 20px #ff2a5f; text-align: center;}
+
+        @media (max-width: 600px) {
+            .decoder-text { font-size: 1.5rem; }
+            .heart-3d { font-size: 6rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- REPRODUCTOR -->
+    <audio id="bg-music" loop>
+        <source src="cancion.mp3" type="audio/mpeg">
+    </audio>
+
+    <canvas id="canvas"></canvas>
+
+    <!-- FASE 1: INICIO -->
+    <div id="phase1" class="phase active">
+        <button class="hold-btn" id="holdBtn">Mantén<br>Presionado</button>
+        <div class="instruction">Despierta la magia</div>
+    </div>
+
+    <!-- FASE 2: RECUERDOS (NUEVO DISEÑO) -->
+    <div id="phase2" class="phase">
+        <div class="instruction">Toca las cartitas flotantes...</div>
+        
+        <!-- Corazones ambientales -->
+        <div class="floating-heart" style="left: 10%; animation-delay: 0s;">💖</div>
+        <div class="floating-heart" style="left: 80%; animation-delay: 1.5s; font-size: 3rem;">✨</div>
+        <div class="floating-heart" style="left: 40%; animation-delay: 3s;">❤️</div>
+        <div class="floating-heart" style="left: 60%; animation-delay: 4.5s; font-size: 1.5rem;">💌</div>
+
+        <!-- Recuerdo 1: Nota -->
+        <div class="memory" style="top: 25%; left: 15%;" onclick="openMemory(this)">
+            <div class="memory-inner">
+                <div class="memory-front">💌</div>
+                <div class="memory-back">Eres mi<br>persona<br>favorita</div>
+            </div>
+        </div>
+
+        <!-- Recuerdo 2: Foto (Instrucción de cómo poner imagen en CSS 'style') -->
+        <!-- Cambia la URL por tu imagen real: url('ruta-de-tu-foto.jpg') -->
+        <div class="memory" style="top: 50%; left: 60%; animation-delay: 0.5s;" onclick="openMemory(this)">
+            <div class="memory-inner">
+                <div class="memory-front">💌</div>
+                <div class="memory-back photo" style="background-image: url('foto1.jpg');">
+                    <div class="photo-caption">Tu carita bonita</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recuerdo 3: Nota -->
+        <div class="memory" style="top: 70%; left: 20%; animation-delay: 1s;" onclick="openMemory(this)">
+            <div class="memory-inner">
+                <div class="memory-front">💌</div>
+                <div class="memory-back">Amo tu<br>hermosa<br>sonrisa mi amor</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FASE 3: DECODIFICADOR -->
+    <div id="phase3" class="phase">
+        <div class="instruction" style="margin-bottom: 20px;">Mensaje Encriptado Encontrado</div>
+        <div class="cyber-box">
+            <div id="decoderText" class="decoder-text">0100101011</div>
+            <button id="decodeBtn" class="decode-btn" onclick="startDecoding()">Decodificar</button>
+        </div>
+    </div>
+
+    <!-- FASE 4: LA BÓVEDA -->
+    <div id="phase4" class="phase">
+        <div class="instruction" style="margin-bottom: 20px; font-size: 1rem;">Código de acceso requerido<br>(Día y Mes)</div>
+        <div class="keypad-container">
+            <div id="display" class="display-screen"></div>
+            <div class="key-grid">
+                <div class="key" onclick="pressKey('1')">1</div>
+                <div class="key" onclick="pressKey('2')">2</div>
+                <div class="key" onclick="pressKey('3')">3</div>
+                <div class="key" onclick="pressKey('4')">4</div>
+                <div class="key" onclick="pressKey('5')">5</div>
+                <div class="key" onclick="pressKey('6')">6</div>
+                <div class="key" onclick="pressKey('7')">7</div>
+                <div class="key" onclick="pressKey('8')">8</div>
+                <div class="key" onclick="pressKey('9')">9</div>
+                <div class="key zero" onclick="pressKey('0')">0</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FASE 5: CLÍMAX -->
+    <div id="phase5" class="phase">
+        <div class="heart-3d">❤️</div>
+        <div class="final-text">Mi universo eres tú TE AMO
+        </div>
+    </div>
+    <script>
+        // --- REPRODUCTOR DE MÚSICA ---
+        let musicStarted = false;
+        function playMusic() {
+            if(!musicStarted) {
+                const audio = document.getElementById('bg-music');
+                audio.volume = 0.5;
+                audio.play().catch(e => console.log("Audio autoplay requiere interacción."));
+                musicStarted = true;
+            }
+        }
+
+        // --- CONTROL DE FASES ---
+        function switchPhase(fromId, toId) {
+            document.getElementById(fromId).classList.remove('active');
+            setTimeout(() => { document.getElementById(toId).classList.add('active'); }, 1000);
+        }
+
+        // --- FASE 1: BOTÓN TENSIÓN ---
+        const btn = document.getElementById('holdBtn');
+        let holdTimer, isHolding = false;
+
+        function startHold(e) {
+            if(e.type === 'touchstart') e.preventDefault();
+            playMusic();
+            isHolding = true; btn.classList.add('holding');
+            holdTimer = setTimeout(() => { endHold(); createExplosion(); switchPhase('phase1', 'phase2'); }, 3000);
+        }
+        function endHold() { isHolding = false; btn.classList.remove('holding'); clearTimeout(holdTimer); }
+
+        btn.addEventListener('mousedown', startHold); btn.addEventListener('touchstart', startHold);
+        btn.addEventListener('mouseup', endHold); btn.addEventListener('mouseleave', endHold); btn.addEventListener('touchend', endHold);
+
+        // --- FASE 2: RECUERDOS (NUEVO) ---
+        let memoriesOpened = 0;
+        function openMemory(element) {
+            if(element.classList.contains('opened')) return; // Evita que se toque dos veces
+            
+            element.classList.add('opened');
+            memoriesOpened++;
+            
+            // Crea una pequeña explosión decorativa alrededor de la tarjeta
+            const rect = element.getBoundingClientRect();
+            createExplosion(rect.left + rect.width/2, rect.top + rect.height/2, false, 50);
+
+            // Si ya abrió los 3, pasa a la siguiente fase
+            if(memoriesOpened >= 3) {
+                setTimeout(() => {
+                    switchPhase('phase2', 'phase3');
+                    startScramble(); // Inicia el texto encriptado de la siguiente fase
+                }, 3000); // Le da 3 segundos para leer la última nota antes de cambiar
+            }
+        }
+
+        // --- FASE 3: DECODIFICADOR ---
+        const targetText = "TE AMO MUCHO MI BONITA"; // Mensaje oculto
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+<>?";
+        const decoderDisplay = document.getElementById('decoderText');
+        let decodeInterval;
+
+        function startScramble() {
+            decodeInterval = setInterval(() => {
+                decoderDisplay.innerText = targetText.split("").map((char) => {
+                    if(char === " ") return " ";
+                    return letters[Math.floor(Math.random() * letters.length)];
+                }).join("");
+            }, 50);
+        }
+
+        function startDecoding() {
+            document.getElementById('decodeBtn').style.display = 'none';
+            let iteration = 0;
+            clearInterval(decodeInterval);
+            
+            decodeInterval = setInterval(() => {
+                decoderDisplay.innerText = targetText.split("").map((char, index) => {
+                    if(char === " ") return " ";
+                    if(index < iteration) return targetText[index];
+                    return letters[Math.floor(Math.random() * letters.length)];
+                }).join("");
+                
+                if(iteration >= targetText.length) {
+                    clearInterval(decodeInterval);
+                    setTimeout(() => switchPhase('phase3', 'phase4'), 2500);
+                }
+                iteration += 1/3; 
+            }, 30);
+        }
+
+        // --- FASE 4: TECLADO (PIN SECRETO) ---
+        let pinCode = "";
+        const PIN_CORRECTO = "0602"; // <--- CAMBIA ESTO (Ej: 1402)
+        const display = document.getElementById('display');
+
+        function pressKey(num) {
+            if (pinCode.length < 4) {
+                pinCode += num;
+                display.innerText = "•".repeat(pinCode.length);
+            }
+            if (pinCode.length === 4) {
+                setTimeout(checkPin, 300);
+            }
+        }
+
+        function checkPin() {
+            if (pinCode === PIN_CORRECTO) {
+                display.style.color = "#00ff88"; display.style.textShadow = "0 0 15px #00ff88";
+                setTimeout(() => { goToPhase5(); }, 1000);
+            } else {
+                display.classList.add('error-shake');
+                setTimeout(() => { display.classList.remove('error-shake'); pinCode = ""; display.innerText = ""; }, 400);
+            }
+        }
+
+        // --- FASE 5: WARP SPEED Y CORAZÓN ---
+        let isWarpSpeed = false;
+        function goToPhase5() { switchPhase('phase4', 'phase5'); isWarpSpeed = true; }
+
+        // --- CANVAS LÍQUIDO / WARP SPEED ---
+        const canvas = document.getElementById('canvas'); const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        let particlesArray = [], mouse = { x: null, y: null };
+
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+        window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
+        window.addEventListener('touchmove', (e) => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; });
+
+        class Particle {
+            constructor(x, y, isExplosion = false) {
+                this.x = x || Math.random() * canvas.width; this.y = y || Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1; this.color = `hsl(${Math.random() * 60 + 300}, 100%, 50%)`;
+                if (isWarpSpeed) {
+                    this.x = canvas.width / 2; this.y = canvas.height / 2;
+                    const angle = Math.random() * Math.PI * 2; const velocity = Math.random() * 10 + 5;
+                    this.speedX = Math.cos(angle) * velocity; this.speedY = Math.sin(angle) * velocity;
+                } else {
+                    this.speedX = (Math.random() * 3 - 1.5) * (isExplosion ? 8 : 1); this.speedY = (Math.random() * 3 - 1.5) * (isExplosion ? 8 : 1);
+                }
+            }
+            update() {
+                this.x += this.speedX; this.y += this.speedY;
+                if (!isWarpSpeed && this.size > 0.2) this.size -= 0.05;
+                if (isWarpSpeed) this.size += 0.1; 
+            }
+            draw() { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+        }
+
+        function handleParticles() {
+            if(!isWarpSpeed && mouse.x && mouse.y) { particlesArray.push(new Particle(mouse.x, mouse.y)); }
+            if(isWarpSpeed) { particlesArray.push(new Particle()); particlesArray.push(new Particle()); }
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update(); particlesArray[i].draw();
+                if (particlesArray[i].size <= 0.2 || particlesArray[i].x < 0 || particlesArray[i].x > canvas.width || particlesArray[i].y < 0 || particlesArray[i].y > canvas.height) { particlesArray.splice(i, 1); i--; }
+            }
+        }
+        
+        // Modificado para aceptar cantidad (amount) para las mini explosiones de las tarjetas
+        function createExplosion(x = canvas.width/2, y = canvas.height/2, forceWarp = false, amount = 150) {
+            for (let i = 0; i < amount; i++) particlesArray.push(new Particle(x, y, true));
+        }
+
+        function animate() {
+            ctx.fillStyle = isWarpSpeed ? 'rgba(5, 5, 5, 0.3)' : 'rgba(5, 5, 5, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            handleParticles(); requestAnimationFrame(animate);
+            mouse.x = undefined; mouse.y = undefined;
+        }
+        animate();
+    </script>
+</body>
+</html>
